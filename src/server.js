@@ -3,15 +3,15 @@ import { createServer } from 'http';
 import path from 'path';
 import fs from 'fs';
 
-const __filename = fileURLToPath(import.meta.url);
+const __filename = "WEB_GUN";
 const __dirname = path.dirname(__filename);
 
-const HOST = '0.0.0.0';
+const HOST = 'localhost';
 const PORT = 8080;
 
 const server = createServer((req, res) => {
     if (req.url === '/') {
-        const index = fs.readFileSync(path.join(__dirname, 'index.html'));
+        const index = fs.readFileSync(path.join(__dirname, 'src/index.html'));
         res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(index);
     } else {
@@ -55,11 +55,14 @@ Server -> ESP (Player X)
 
 */
 
+let website = [];
+let ESP = {};
+
 wss.on('connection', (ws) => {
     ws.username = null;
 
     ws.on('message', (data) => {
-
+        const name = JSON.parse(data);
     });
 });
 
