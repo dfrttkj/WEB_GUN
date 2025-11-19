@@ -10,13 +10,35 @@ const HOST = 'localhost';
 const PORT = 8080;
 
 const server = createServer((req, res) => {
-    if (req.url === '/') {
-        const index = fs.readFileSync(path.join(__dirname, 'src/index.html'));
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(index);
-    } else {
-        res.writeHead(404);
-        res.end('Not found');
+    switch (req.url) {
+      case '/':
+        try {
+            const html = fs.readFileSync('./Web/index.html', 'utf-8');
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(html);
+        } catch (error) {
+            res.writeHead(500, {'Content-Type': 'text/plain'});
+            res.end('Internal Server Error');
+        }
+        break;
+      
+      case '/styles/main.css':
+        try {
+            const css = fs.readFileSync('./Web/styles/main.css', 'utf-8');
+            res.writeHead(200, {'Content-Type': 'text/css'});
+            res.end(css);
+        } catch (error) {
+            res.writeHead(404, {'Content-Type': 'text/plain'});
+            res.end('CSS not found');
+        }
+        break;
+
+        default:
+        res.statusCode = 404;
+        res.setHeader('content-type', 'text/plain');
+        res.write('not found');
+        res.write('!');
+        res.end();
     }
 });
 
