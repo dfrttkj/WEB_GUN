@@ -1,5 +1,24 @@
 import fs from "fs";
 
+// Im Frontend: ./src/Web/scripts/startPage.js
+const socket = new WebSocket('ws://localhost:8080/ESP');
+
+socket.onopen = () => {
+    console.log('WebSocket connected');
+};
+
+socket.onmessage = (event) => {
+    // Hier kannst du alle Daten verarbeiten, die der Server schickt
+    const data = JSON.parse(event.data);
+    // Beispiel: HTML-Element mit Daten updaten
+    document.getElementById('myOutput').textContent = JSON.stringify(data, null, 2);
+};
+
+socket.onerror = (err) => {
+    console.error('WebSocket error:', err);
+};
+
+
 init();
 
 const playersArr = JSON.parse(fs.readFileSync("../data/players.json", "utf-8"));
