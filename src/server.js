@@ -1,115 +1,37 @@
-import { WebSocketServer } from "ws";
 import { createServer } from 'http';
-import path from 'path';
-import fs from 'fs';
+import { WebSocketServer } from 'ws';
 
-const __filename = "WEB_GUN";
-const __dirname = path.dirname(__filename);
-const handlURL = new Map([
-    ["/", getAndSendHTML],
-    ["/styles/main.css", getAndSendCSS],
-    ["/scripts/startPage.js", getAndSendJS],
-    ["default", getNotFound]
-]);
-
-const HOST = 'localhost';
-const PORT = 8080;
+import { handleHttpRequest } from './routes/api.js';
+import { handleConnection } from './websocket/handlers.js';
+import { getServerIp } from './utils/helpers.js';
+import { PORT, HOST } from './config/constants.js';
+import { log } from './utils/logger.js'; // Import Logger
 
 const server = createServer((req, res) => {
+    // LOG EVERYTHING: Incoming HTTP Request
+    const ip = req.socket.remoteAddress;
+    log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
 
-    if (handlURL.has(req.url)) {
-        handlURL.get(req.url)(req, res);
-    } else {
-        handlURL.get("default")(req, res);
-    }
+    handleHttpRequest(req, res);
 });
 
-const wss = new WebSocketServer({ 
-    noServer: true,
-    path: "/ESP"
+const wss = new WebSocketServer({
+    server,
+    path: '/chat'   // ws://HOST:PORT/chat
 });
 
-function getAndSendHTML(_req, res) {
-    try {
-        const html = fs.readFileSync(path.resolve(__dirname, './src/Web/index.html'), 'utf-8');
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(html);
-    } catch (error) {
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('Internal Server Error');
-    }
-}
+wss.on('connection', (ws, req) => {
+    // LOG EVERYTHING: New WebSocket Connection
+    const ip = req.socket.remoteAddress;
+    log('WS', 'Conn', `New connection established from ${ip}`);
 
-function getAndSendCSS(_req, res) {
-    try {
-        const css = fs.readFileSync(path.resolve(__dirname, './src/Web/styles/main.css'), 'utf-8');
-        res.writeHead(200, {'Content-Type': 'text/css'});
-        res.end(css);
-    } catch (error) {
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('Internal Server Error');
-    }
-}
-
-function getAndSendJS(_req, res) {
-    try {
-        const css = fs.readFileSync(path.resolve(__dirname, './src/Web/scripts/startPage.js'), 'utf-8');
-        res.writeHead(200, {'Content-Type': 'text/javascript'});
-        res.end(css);
-    } catch (error) {
-        res.writeHead(500, {'Content-Type': 'text/plain'});
-        res.end('Internal Server Error');
-    }
-}
-
-function getNotFound(_req, res) {
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('Not Found');
-}
-
-
-/*
-ESP (Player X) -> Server
-{
-    'player': {
-        'PlayerID': xx
-        'TeamID': xx
-    }
-    'message': {
-        'variable': xx
-        'change': xx
-        'current': xx
-    }
-}
-
-Server -> ESP (Player X)
-{
-    'player': {
-        'PlayerID': xx
-        'TeamID': xx
-    }
-    'message': {
-        'variable': xx
-        'change': xx
-        'current': xx
-    }
-}
-
-*/
-
-let website = [];
-let ESP = {};
-
-wss.on('connection', (ws) => {
-    ws.username = null;
-
-    ws.on('message', (data) => {
-        const name = JSON.parse(data);
-    });
+    handleConnection(ws, wss);
 });
 
-// Start server
-server.listen(PORT, HOST, () => {
-    console.log(`You can test with: ws:/${HOST}:${PORT}/ESP`);
-    console.log(`You can connet to: http://${HOST}:${PORT}`);
+server.listen(PORT, HOST, async () => {
+    const ip = await getServerIp();
+
+    log('INFO', 'System', `Server started on port ${PORT}`);
+    console.log('----------------------------------------');
+    console.log(`Server running at http://${HOST}:${PORT}`);
 });

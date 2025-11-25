@@ -1,19 +1,20 @@
 {
-  "name": "gun",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "wschat2",
+  "version": "1.1.0",
+  "description": "A modular chatroom utilizing websockets",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node ./src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": ""
+    "start": "node src/server.js",
+    "startlive": "docker-compose up"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
+    "child_process": "^1.0.2",
+    "crypto": "^1.0.1",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "path": "^0.12.7",
+    "util": "^0.12.5",
     "ws": "^8.18.3"
   }
 }

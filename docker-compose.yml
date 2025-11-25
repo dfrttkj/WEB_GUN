@@ -1,0 +1,30 @@
+services:
+  # 1. Your Chat Application
+  chat-app:
+    build: .
+    container_name: wschat
+    restart: unless-stopped
+    environment:
+      - PORT=8080
+      - HOST=0.0.0.0
+    volumes:
+      - ./logs:/app/logs          # Persist logs outside the container
+      - ./users.json:/app/users.json # Persist user data
+    networks:
+      - chat-net
+
+  # 2. Cloudflare Tunnel (The Magic Part)
+  # This creates a temporary public URL for your app.
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: chat-tunnel
+    restart: unless-stopped
+    command: tunnel --url http://chat-app:8080
+    networks:
+      - chat-net
+    depends_on:
+      - chat-app
+
+networks:
+  chat-net:
+    driver: bridge
