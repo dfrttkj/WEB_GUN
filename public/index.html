@@ -4,66 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Room</title>
+    <title>Wireframe Copy</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <h1>Laser Tag</h1>
 
-    <div id="mainBox">
-        <div>
-            <h2>Player List</h2>
+    <div class="container">
+        <header>
+            <h1>Logo</h1> <button class="start-btn">Start Game</button>
+        </header>
 
-            <table>
-                <tr>
-                    <th>Player ID</th>
-                    <th>Name</th>
-                    <th>Team</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>John</td>
-                    <td>Blue</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jakob</td>
-                    <td>Red</td>
-                </tr>
-                <tr>
-                    <td>demo</td>
-                    <td>demo</td>
-                    <td>demo</td>
-                </tr>
-                <tr>
-                    <td>demo</td>
-                    <td>demo</td>
-                    <td>demo</td>
-                </tr>
-                <tr>
-                    <td>demo</td>
-                    <td>demo</td>
-                    <td>demo</td>
-                </tr>
-                <tr>
-                    <td>demo</td>
-                    <td>demo</td>
-                    <td>demo</td>
-                </tr>
-                <tr>
-                    <td>demo</td>
-                    <td>demo</td>
-                    <td>demo</td>
-                </tr>
-            </table>
-        </div>
-        <div>
-            <button>Start Game</button>
+        <div class="main-content">
+            <div class="left-panel">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%">Player ID</th>
+                            <th style="width: 40%">Name</th>
+                            <th style="width: 40%">Team</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="static-text">001</td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                        </tr>
+                        <tr>
+                            <td class="static-text">002</td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                        </tr>
+                        <tr>
+                            <td class="static-text">003</td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                        </tr>
+                        <tr>
+                            <td class="static-text">004</td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                            <td><input type="text" class="table-input" placeholder="Input field"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="right-panel">
+
+                <div class="form-row">
+                    <label>Time :</label>
+                    <input type="number" value="0">
+                </div>
+
+                <div class="form-row">
+                    <label>Rounds :</label>
+                    <input type="number" value="0">
+                </div>
+
+                <div class="advanced-header">
+                    <span class="arrow-down">▼</span> Advanced:
+                </div>
+
+                <div class="advanced-settings">
+
+                    <div class="form-row" style="justify-content: flex-start; gap: 10px;">
+                        <label>Friendly fire</label>
+                        <input type="checkbox">
+                    </div>
+
+                    <div class="form-row">
+                        <label>Shot cooldown:</label>
+                        <div class="cooldown-wrapper">
+                            <input type="number">
+                            <span class="ms-label">ms</span>
+                        </div>
+                    </div>
+
+                    <div class="radio-group">
+                        <div class="radio-row">
+                            <label>Full auto</label>
+                            <input type="radio" name="firemode" checked>
+                        </div>
+                        <div class="radio-row">
+                            <label>Semi auto</label>
+                            <input type="radio" name="firemode">
+                            <input type="number" class="semi-input" value="0">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="js/client.js"></script>
 </body>
 
 </html>
