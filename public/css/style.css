@@ -1,185 +1,265 @@
+:root {
+    --bg-body: #121212;
+    --bg-panel: #1e1e1e;
+    --bg-input: #2c2c2c;
+    --text-main: #e0e0e0;
+    --text-muted: #a0a0a0;
+    --accent: #00ff88;
+    /* Neon Green */
+    --accent-hover: #00cc6a;
+    --border: #333;
+    --danger: #ff5555;
+}
 
-/* General page reset */
-body {
-    font-family: sans-serif;
-    /* padding: 20px; */
-    background-color: #eeeedd;
-    /* Light graph-paper-ish background */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    color: oklch(61% 0.2 29);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Main Container (The big box) */
-asdf.container {
-    border: 2px solid #333;
-    width: 800px;
-    background-color: white;
-    margin: 0 auto;
-}
-
-/* Header Section */
+/* --- Header --- */
 header {
+    background-color: var(--bg-panel);
+    padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    border-bottom: 2px solid #333;
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-h1 {
-    margin: 0;
-    font-size: 32px;
-    /* Outline style font to mimic the drawing */
-    -webkit-text-stroke: 1px black;
-    color: #caffee;
-    letter-spacing: 2px;
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
-.start-btn {
-    border: 2px solid #333;
-    background: greenyellow;
-    padding: 5px 15px;
-    font-size: 16px;
-    border-radius: 5px;
-    /* Slight curve like the drawing */
+.btn-start {
+    background-color: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-/* Main Content Area (Split Layout) */
-.main-content {
+.btn-start:hover {
+    background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+/* --- Main Layout --- */
+main {
     display: flex;
-    height: 500px;
-    /* Fixed height to match proportion */
+    flex: 1;
+    padding: 2rem;
+    gap: 2rem;
+    overflow: hidden;
+    /* Prevents double scrollbars */
 }
 
-/* Left Column: The Table */
-.left-panel {
-    flex: 6;
-    /* Takes up about 60% of width */
-    border-right: 2px solid #333;
-    padding: 10px;
+/* --- Left Side: Table --- */
+.roster-section {
+    flex: 2;
+    /* Takes up 2/3rds of space */
+    background-color: var(--bg-panel);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    overflow-y: auto;
+}
+
+h2 {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 0.95rem;
 }
 
-th {
-    border: 1px solid #333;
-    padding: 8px;
+thead th {
     text-align: left;
+    padding: 12px 16px;
+    background-color: #252525;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border);
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.2s;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 td {
-    border: 1px solid #333;
-    padding: 0;
-    /* Remove padding to fit inputs snugly */
-    height: 40px;
+    padding: 12px 16px;
 }
 
-/* Inputs inside the table */
-.table-input {
-    width: 100%;
-    height: 100%;
+/* Styling the inputs inside the table to look clean */
+td input {
+    background: transparent;
     border: none;
-    padding: 5px;
-    box-sizing: border-box;
-    font-size: 14px;
+    color: var(--text-main);
+    width: 100%;
+    font-family: inherit;
+    outline: none;
 }
 
-/* The "Immutable Text" column styling */
-.static-text {
-    padding: 10px;
-    color: #555;
+td input:focus {
+    border-bottom: 1px solid var(--accent);
 }
 
-/* Right Column: The Settings Div */
-.right-panel {
-    flex: 4;
-    /* Takes up about 40% of width */
-    padding: 20px;
+/* --- Right Side: Settings --- */
+.settings-section {
+    flex: 1;
+    /* Takes up 1/3rd of space */
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 1.5rem;
 }
 
-/* Form Rows */
-.form-row {
+.card {
+    background-color: var(--bg-panel);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.input-wrapper {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
-.form-row label {
-    font-size: 18px;
-}
-
-/* Number inputs with spinner arrows */
-input[type="number"] {
-    width: 80px;
-    padding: 5px;
-    border: 1px solid #333;
-    border-radius: 5px;
-}
-
-/* Advanced Section */
-.advanced-header {
-    margin-top: 10px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.arrow-down {
-    font-size: 12px;
-}
-
-/* Dashed border area for Advanced settings */
-.advanced-settings {
-    border: 1px dashed #999;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.cooldown-wrapper {
-    display: flex;
-    align-items: center;
-    border: 1px solid #333;
-    border-radius: 5px;
-    padding-right: 5px;
-    width: 100px;
-}
-
-.cooldown-wrapper input {
-    border: none;
+.styled-input {
     width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border);
+    color: white;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 1rem;
 }
 
-.ms-label {
-    font-size: 12px;
-    color: #666;
+.styled-input:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
-/* Radio Button Group */
+.suffix {
+    position: absolute;
+    right: 12px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+/* Toggle Switch / Radio Styling */
 .radio-group {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    background-color: var(--bg-input);
+    padding: 4px;
+    border-radius: 8px;
 }
 
-.radio-row {
+.radio-option {
+    flex: 1;
+    position: relative;
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.radio-option label {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    margin: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.radio-option input[type="radio"]:checked+label {
+    background-color: var(--accent);
+    color: #000;
+    font-weight: 600;
+}
+
+/* Checkbox styling */
+.checkbox-group {
     display: flex;
     align-items: center;
     gap: 10px;
+    cursor: pointer;
 }
 
-/* Semi-auto specific input */
-.semi-input {
-    width: 50px !important;
+.checkbox-group input {
+    accent-color: var(--accent);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Advanced Area Header */
+.advanced-header {
+    color: var(--danger);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.advanced-header::before {
+    content: '▼';
+    font-size: 0.7em;
 }

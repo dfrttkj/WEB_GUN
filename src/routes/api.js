@@ -14,7 +14,7 @@ const MIME_TYPES = {
 
 export function handleHttpRequest(req, res) {
     let filePath = req.url === '/'
-        ? path.join(PUBLIC_DIR, 'index.html')
+        ? path.join(PUBLIC_DIR, 'config.html')
         : path.join(PUBLIC_DIR, req.url);
 
     const extname = path.extname(filePath);

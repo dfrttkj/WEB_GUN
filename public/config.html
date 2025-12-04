@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Dashboard Redesign</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">GameConfig</div>
+        <button class="btn-start">Start Game</button>
+    </header>
+
+    <main>
+        <section class="roster-section">
+            <h2>Active Roster</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%">ID</th>
+                        <th style="width: 45%">Name</th>
+                        <th style="width: 40%">Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>001</td>
+                        <td><input type="text" value="Hallo"></td>
+                        <td><input type="text" value="Hallo"></td>
+                    </tr>
+                    <tr>
+                        <td>002</td>
+                        <td><input type="text" value="Hallo"></td>
+                        <td><input type="text" value="Hallo"></td>
+                    </tr>
+                    <tr>
+                        <td>003</td>
+                        <td><input type="text" value="Hallo"></td>
+                        <td><input type="text" value="Hallo"></td>
+                    </tr>
+                    <tr>
+                        <td>004</td>
+                        <td><input type="text" value="Hallo"></td>
+                        <td><input type="text" value="Hallo"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <aside class="settings-section">
+
+            <div class="card">
+                <h2>Game Settings</h2>
+                <div class="form-group">
+                    <label>Time Limit</label>
+                    <div class="input-wrapper">
+                        <input type="number" class="styled-input" value="10">
+                        <span class="suffix">min</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Total Rounds</label>
+                    <input type="number" class="styled-input" value="3">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="advanced-header">Advanced Configuration</div>
+
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="ff">
+                        <label for="ff">Enable Friendly Fire</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Shot Cooldown</label>
+                    <div class="input-wrapper">
+                        <input type="number" class="styled-input" value="500">
+                        <span class="suffix">ms</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Firing Mode</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="auto" name="firemode" checked>
+                            <label for="auto">Full Auto</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="semi" name="firemode">
+                            <label for="semi">Semi Auto</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="single" name="firemode">
+                            <label for="single">Single</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </aside>
+    </main>
+
+</body>
+
+</html>

@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 import { handleHttpRequest } from './routes/api.js';
 import { handleConnection } from './websocket/handlers.js';
 import { getServerIp } from './utils/helpers.js';
-import { PORT, HOST } from './config/constants.js';
+import { PORT, HOST, WS_PATH } from './config/constants.js';
 import { log } from './utils/logger.js'; // Import Logger
 
 const server = createServer((req, res) => {
@@ -17,7 +17,7 @@ const server = createServer((req, res) => {
 
 const wss = new WebSocketServer({
     server,
-    path: '/chat'   // ws://HOST:PORT/chat
+    path: WS_PATH   // ws://HOST:PORT/chat
 });
 
 wss.on('connection', (ws, req) => {

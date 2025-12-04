@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
-    "startlive": "docker-compose up"
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
     "child_process": "^1.0.2",
+    "nodemon": "^3.1.11",
     "crypto": "^1.0.1",
     "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
