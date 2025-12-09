@@ -1,6 +1,7 @@
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 import constants from './config/constants.js';
+import handler from './utils/handler.js';
 
 const server = createServer((req, res) => {
     const ip = req.socket.remoteAddress;
@@ -17,9 +18,20 @@ wss.on('connection', (ws, req) => {
     console.log('WS', 'Conn', `New connection established from ${ip}`);
 });
 
-wss.on('message', ()=>{
-    
-})
+wss.on('message', (message) => {
+    console.log(message.toString());
+
+    let data;
+    try {
+        data = JSON.parse(message);
+    } catch (error) {
+        console.log("Data could not be read");
+    } 
+
+    if (data) {
+        handler.handleMessage(message);
+    }
+});
 
 server.listen(constants.PORT, constants.HOST, async () => {
     console.log('INFO', 'System', `Server started on port ${constants.PORT}`);
