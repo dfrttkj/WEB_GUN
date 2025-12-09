@@ -16,25 +16,57 @@
 
 <div class="page-layout">
 
-    <!-- Tabelle -->
     <div class="table-container">
-        <h2>Players</h2>
 
-        <table class="player-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Team</th>
-                </tr>
-            </thead>
-            <tbody id="playerTableBody">
-                <!-- JS füllt ein -->
-            </tbody>
-        </table>
+        <div class="box-header">
+            <h2 id="boxTitle">Players</h2>
+            <button id="switchViewBtn" class="switch-btn">Teams</button>
+        </div>
+
+        <div class="view-wrapper">
+
+            <div id="playersView" class="tab-view">
+                <div class="table-scroll">
+                    <table class="player-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Team</th>
+                            </tr>
+                        </thead>
+                        <tbody id="playerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="teamsView" class="tab-view hidden">
+                <div class="teams-content">
+
+                    <div class="team-add">
+                        <input type="text" id="teamNameInput" placeholder="Team name" maxlength="32">
+                        <button id="addTeamBtn" class="primary-btn">Add Team</button>
+                    </div>
+
+                    <div class="teams-table-scroll">
+                        <table class="teams-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="teamTableBody"></tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 
-    <!-- Placeholder -->
     <div class="right-placeholder">
         <p>Coming soon...</p>
     </div>
