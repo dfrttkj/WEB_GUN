@@ -4,8 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create</title>
+    <link rel="stylesheet" href="styles/create.css">
 </head>
 <body>
-    
+
+<nav class="nav">
+    <a href="home.html">Home</a>
+    <a href="create.html">Create</a>
+    <a href="leaderboard.html">Leaderboard</a>
+</nav>
+
+<div class="page-layout">
+
+    <!-- Tabelle -->
+    <div class="table-container">
+        <h2>Players</h2>
+
+        <table class="player-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Team</th>
+                </tr>
+            </thead>
+            <tbody id="playerTableBody">
+                <!-- JS füllt ein -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="right-placeholder">
+        <p>Coming soon...</p>
+    </div>
+
+</div>
+
+<script src="scripts/script.js"></script>
 </body>
 </html>
