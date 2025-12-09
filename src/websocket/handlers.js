@@ -14,7 +14,7 @@ export function handleConnection(ws, wss) {
 
     ws.on('message', (msg) => {
         // LOG EVERYTHING: Raw incoming message size/content
-        log('DEBUG', 'Raw', `Received payload: ${msg.toString()}`);
+        console.log('DEBUG', 'Raw', `Received payload: ${msg.toString()}`);
 
         let data;
         try {
