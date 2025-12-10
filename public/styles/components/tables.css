@@ -1,0 +1,93 @@
+/* ========================= TABLES ========================= */
+
+.table-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  scrollbar-gutter: stable;
+}
+
+.table-scroll::-webkit-scrollbar { width: 8px; }
+.table-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
+.table-scroll::-webkit-scrollbar-thumb:hover { background: #777; }
+
+.player-table,
+.teams-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Sticky headers */
+.player-table thead th,
+.teams-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #2c2c2e;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.35);
+}
+
+/* Head cells */
+.player-table th,
+.teams-table th {
+  padding: 10px;
+  color: #9d9da1;
+  border-bottom: 1px solid #3a3a3c;
+  text-align: center;
+}
+
+/* Body cells */
+.player-table td,
+.teams-table td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #3a3a3c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip; /* keep stable but no "..." */
+  background: transparent;
+}
+
+/* ID column tighter */
+.player-table th:nth-child(1), .player-table td:nth-child(1),
+.teams-table th:nth-child(1),  .teams-table td:nth-child(1) {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.player-table th:nth-child(1), .player-table td:nth-child(1) { width: 12%; }
+.player-table th:nth-child(2), .player-table td:nth-child(2) { width: 44%; }
+.player-table th:nth-child(3), .player-table td:nth-child(3) { width: 44%; }
+
+.teams-table th:nth-child(1), .teams-table td:nth-child(1) { width: 14%; }
+.teams-table th:nth-child(2), .teams-table td:nth-child(2) { width: 68%; }
+.teams-table th:nth-child(3), .teams-table td:nth-child(3) { width: 18%; }
+
+/* Hover */
+.player-table tbody tr { transition: background-color 0.18s ease, filter 0.18s ease; }
+.player-table tbody tr:hover { background-color: rgba(255,255,255,0.04); filter: brightness(1.03); }
+
+/* Contenteditable focus */
+.player-table td[contenteditable="true"]:focus {
+  outline: 1px solid rgba(255,255,255,0.16);
+  outline-offset: -2px;
+  border-radius: 8px;
+}
+
+.players-team-cell { cursor: pointer; user-select: none; }
+.players-team-cell.team-locked { cursor: default; }
+
+/* Teams scroll region */
+.teams-table-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  scrollbar-gutter: stable;
+}
+
+.teams-table-scroll::-webkit-scrollbar { width: 8px; }
+.teams-table-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
+.teams-table-scroll::-webkit-scrollbar-thumb:hover { background: #777; }

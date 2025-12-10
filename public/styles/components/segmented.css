@@ -1,0 +1,35 @@
+/* ========================= SEGMENTED ========================= */
+
+.segmented {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  gap: 4px;
+}
+
+.seg-btn {
+  padding: 7px 12px;
+  border-radius: 10px;
+  border: 0;
+  background: transparent;
+  color: #9d9da1;
+  cursor: pointer;
+  transition: 0.18s ease;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.seg-btn.active {
+  background: rgba(255,255,255,0.10);
+  color: #f5f5f7;
+}
+
+.seg-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.seg-btn:disabled:hover { background: transparent; }
