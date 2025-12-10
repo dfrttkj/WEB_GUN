@@ -1,225 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create</title>
-    <link rel="stylesheet" href="styles/create.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create</title>
+  <link rel="stylesheet" href="styles/create.css">
 </head>
 <body>
 
 <!-- MODE SELECTION OVERLAY -->
 <div id="modeOverlay" class="overlay">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modeTitle">
-        <div class="modal-header">
-            <h2 id="modeTitle">Select game mode</h2>
-            <p class="modal-sub">
-                Choose how the match should be played. You can configure players and settings after this.
-            </p>
-        </div>
-
-        <div class="mode-grid" role="radiogroup" aria-label="Game modes">
-            <button type="button" class="mode-card selected" data-mode="tdm" role="radio" aria-checked="true">
-                <div class="mode-name">Team Deathmatch</div>
-                <div class="mode-desc">Elimination. When a player has no lives left, they are out. Last team alive wins.</div>
-                <ul class="mode-points">
-                    <li>Teams enabled</li>
-                    <li>Cooldown + lives</li>
-                </ul>
-            </button>
-
-            <button type="button" class="mode-card" data-mode="ffa" role="radio" aria-checked="false">
-                <div class="mode-name">Free for all</div>
-                <div class="mode-desc">Time-based. Match ends when the timer runs out. Highest score wins.</div>
-                <ul class="mode-points">
-                    <li>No teams</li>
-                    <li>Cooldown + game length + lives</li>
-                </ul>
-            </button>
-        </div>
-
-        <div class="modal-actions">
-            <button id="modeContinueBtn" class="primary-btn modal-primary" type="button">Continue</button>
-        </div>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modeTitle">
+    <div class="modal-header">
+      <h2 id="modeTitle">Select game mode</h2>
+      <p class="modal-sub">
+        Choose how the match should be played. You can configure players and settings after this.
+      </p>
     </div>
+
+    <div class="mode-grid" role="radiogroup" aria-label="Game modes">
+      <button type="button" class="mode-card selected" data-mode="tdm" role="radio" aria-checked="true">
+        <div class="mode-name">Team Deathmatch</div>
+        <div class="mode-desc">Elimination. When a player has no lives left, they are out. Last team alive wins.</div>
+        <ul class="mode-points">
+          <li>Teams enabled</li>
+          <li>Cooldown + lives</li>
+        </ul>
+      </button>
+
+      <button type="button" class="mode-card" data-mode="ffa" role="radio" aria-checked="false">
+        <div class="mode-name">Free for all</div>
+        <div class="mode-desc">Time-based. Match ends when the timer runs out. Highest score wins.</div>
+        <ul class="mode-points">
+          <li>No teams</li>
+          <li>Cooldown + game length + lives</li>
+        </ul>
+      </button>
+    </div>
+
+    <div class="modal-actions">
+      <button id="modeContinueBtn" class="primary-btn modal-primary" type="button">Continue</button>
+    </div>
+  </div>
 </div>
 
 <nav class="nav">
+  <div class="nav-left">
     <a href="home.html">Home</a>
     <a href="create.html">Create</a>
     <a href="leaderboard.html">Leaderboard</a>
+  </div>
+
+  <!-- UNLOCK CONTROL (top right) -->
+  <div class="nav-right" aria-label="Unlock control">
+    <button id="lockToggleBtn" class="lock-btn" type="button" aria-label="Toggle lock">
+      <span id="lockIcon" class="lock-icon" aria-hidden="true">🔒</span>
+    </button>
+
+    <div id="unlockInputWrap" class="unlock-input-wrap">
+      <input id="unlockInput" class="unlock-input" type="password" placeholder="Password" autocomplete="off">
+    </div>
+  </div>
 </nav>
 
-<div class="page-layout">
+<!-- LOCK OVERLAY (covers content below navbar) -->
+<div id="lockedOverlay" class="locked-overlay hidden" aria-live="polite">
+  <div class="locked-card">
+    <div class="locked-title">Create page is locked</div>
+    <div class="locked-text">
+      Please ask a project member to unlock this page.
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT WRAPPER (gets blurred/disabled when locked) -->
+<div id="contentShell" class="content-shell">
+
+  <div class="page-layout">
 
     <!-- LEFT PANEL -->
     <div class="table-container">
 
-        <div class="box-header">
-            <h2 id="boxTitle">Players</h2>
+      <div class="box-header">
+        <h2 id="boxTitle">Players</h2>
 
-            <div class="segmented" role="tablist" aria-label="Left panel mode">
-                <button id="playersTabBtn" class="seg-btn active" type="button" role="tab" aria-selected="true">
-                    Players
-                </button>
-                <button id="teamsTabBtn" class="seg-btn" type="button" role="tab" aria-selected="false">
-                    Teams
-                </button>
-            </div>
+        <div class="segmented" role="tablist" aria-label="Left panel mode">
+          <button id="playersTabBtn" class="seg-btn active" type="button" role="tab" aria-selected="true">
+            Players
+          </button>
+          <button id="teamsTabBtn" class="seg-btn" type="button" role="tab" aria-selected="false">
+            Teams
+          </button>
+        </div>
+      </div>
+
+      <div class="view-wrapper">
+
+        <!-- PLAYERS VIEW -->
+        <div id="playersView" class="tab-view">
+          <div class="table-scroll">
+            <table class="player-table">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Team</th>
+              </tr>
+              </thead>
+              <tbody id="playerTableBody"></tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="view-wrapper">
+        <!-- TEAMS VIEW -->
+        <div id="teamsView" class="tab-view hidden">
+          <div class="teams-content">
 
-            <!-- PLAYERS VIEW -->
-            <div id="playersView" class="tab-view">
-                <div class="table-scroll">
-                    <table class="player-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Team</th>
-                        </tr>
-                        </thead>
-                        <tbody id="playerTableBody"></tbody>
-                    </table>
-                </div>
+            <div class="team-add">
+              <input type="text" id="teamNameInput" class="input-field" placeholder="Team name" maxlength="32">
+              <button id="addTeamBtn" class="primary-btn" type="button">Add Team</button>
             </div>
 
-            <!-- TEAMS VIEW -->
-            <div id="teamsView" class="tab-view hidden">
-                <div class="teams-content">
-
-                    <div class="team-add">
-                        <input type="text" id="teamNameInput" class="input-field" placeholder="Team name" maxlength="32">
-                        <button id="addTeamBtn" class="primary-btn" type="button">Add Team</button>
-                    </div>
-
-                    <div class="teams-table-scroll">
-                        <table class="teams-table">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody id="teamTableBody"></tbody>
-                        </table>
-                    </div>
-
-                </div>
+            <div class="teams-table-scroll">
+              <table class="teams-table">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th></th>
+                </tr>
+                </thead>
+                <tbody id="teamTableBody"></tbody>
+              </table>
             </div>
 
+          </div>
         </div>
+
+      </div>
     </div>
 
     <!-- RIGHT PANEL: GAME SETTINGS -->
     <div class="settings-container">
 
-        <div class="box-header">
-            <h2>Game settings</h2>
+      <div class="box-header">
+        <h2>Game settings</h2>
 
-            <div class="segmented" role="tablist" aria-label="Settings mode">
-                <button id="settingsSimpleBtn" class="seg-btn active" type="button" role="tab" aria-selected="true">
-                    Simple
-                </button>
-                <button id="settingsAdvancedBtn" class="seg-btn" type="button" role="tab" aria-selected="false">
-                    Advanced
-                </button>
-            </div>
+        <div class="segmented" role="tablist" aria-label="Settings mode">
+          <button id="settingsSimpleBtn" class="seg-btn active" type="button" role="tab" aria-selected="true">
+            Simple
+          </button>
+          <button id="settingsAdvancedBtn" class="seg-btn" type="button" role="tab" aria-selected="false">
+            Advanced
+          </button>
         </div>
+      </div>
 
-        <div class="settings-wrapper">
+      <div class="settings-wrapper">
 
-            <!-- SIMPLE VIEW -->
-            <div id="settingsSimpleView" class="settings-view">
+        <!-- SIMPLE VIEW -->
+        <div id="settingsSimpleView" class="settings-view">
 
-                <div class="setting-section">
-                    <div class="section-title">Cooldown</div>
-                    <div class="choice-row" role="group" aria-label="Cooldown presets">
-                        <button class="choice-btn" type="button" data-cooldown-preset="fast">Short</button>
-                        <button class="choice-btn" type="button" data-cooldown-preset="intermediate">Medium</button>
-                        <button class="choice-btn" type="button" data-cooldown-preset="slow">Long</button>
-                    </div>
-                </div>
-
-                <div id="simpleDurationSection" class="setting-section">
-                    <div class="section-title">Game length</div>
-                    <div class="choice-row" role="group" aria-label="Game length presets">
-                        <button class="choice-btn" type="button" data-duration-min="5">5 min</button>
-                        <button class="choice-btn" type="button" data-duration-min="10">10 min</button>
-                        <button class="choice-btn" type="button" data-duration-min="15">15 min</button>
-                    </div>
-                </div>
-
-                <!-- LIVES (replaced select with stepper) -->
-                <div class="setting-section">
-                    <div class="section-title">Lives</div>
-
-                    <div class="stepper" aria-label="Lives selector">
-                        <button id="livesMinusBtn" class="stepper-btn" type="button" aria-label="Decrease lives">–</button>
-                        <input id="livesSimpleInput"
-                               class="stepper-input"
-                               type="number"
-                               min="1"
-                               max="99"
-                               step="1"
-                               inputmode="numeric"
-                               aria-label="Lives">
-                        <button id="livesPlusBtn" class="stepper-btn" type="button" aria-label="Increase lives">+</button>
-                    </div>
-                </div>
-
+          <div class="setting-section">
+            <div class="section-title">Cooldown</div>
+            <div class="choice-row" role="group" aria-label="Cooldown presets">
+              <button class="choice-btn" type="button" data-cooldown-preset="fast">Short</button>
+              <button class="choice-btn" type="button" data-cooldown-preset="intermediate">Medium</button>
+              <button class="choice-btn" type="button" data-cooldown-preset="slow">Long</button>
             </div>
+          </div>
 
-            <!-- ADVANCED VIEW -->
-            <div id="settingsAdvancedView" class="settings-view hidden">
-
-                <div class="setting-section">
-                    <div class="section-title">Cooldown</div>
-                    <input id="cooldownMsInput"
-                           class="input-field"
-                           type="number"
-                           min="0"
-                           step="50"
-                           placeholder="ms (e.g. 500)"
-                           aria-label="Cooldown in milliseconds">
-                </div>
-
-                <div id="advancedDurationSection" class="setting-section">
-                    <div class="section-title">Game length</div>
-                    <input id="durationMinInput"
-                           class="input-field"
-                           type="number"
-                           min="1"
-                           step="1"
-                           placeholder="minutes (e.g. 10)"
-                           aria-label="Game length in minutes">
-                </div>
-
-                <div class="setting-section">
-                    <div class="section-title">Lives</div>
-                    <input id="livesInput"
-                           class="input-field"
-                           type="number"
-                           min="1"
-                           step="1"
-                           placeholder="(e.g. 3)"
-                           aria-label="Lives">
-                </div>
-
+          <div id="simpleDurationSection" class="setting-section">
+            <div class="section-title">Game length</div>
+            <div class="choice-row" role="group" aria-label="Game length presets">
+              <button class="choice-btn" type="button" data-duration-min="5">5 min</button>
+              <button class="choice-btn" type="button" data-duration-min="10">10 min</button>
+              <button class="choice-btn" type="button" data-duration-min="15">15 min</button>
             </div>
+          </div>
+
+          <div class="setting-section">
+            <div class="section-title">Lives</div>
+            <div class="stepper" aria-label="Lives selector">
+              <button id="livesMinusBtn" class="stepper-btn" type="button" aria-label="Decrease lives">–</button>
+              <input id="livesSimpleInput"
+                     class="stepper-input"
+                     type="number"
+                     min="1"
+                     max="99"
+                     step="1"
+                     inputmode="numeric"
+                     aria-label="Lives">
+              <button id="livesPlusBtn" class="stepper-btn" type="button" aria-label="Increase lives">+</button>
+            </div>
+          </div>
 
         </div>
 
-        <div class="create-area">
-            <button id="createGameBtn" class="primary-btn create-btn" type="button">Create</button>
-            <div id="createError" class="error-slot" aria-live="polite"></div>
+        <!-- ADVANCED VIEW -->
+        <div id="settingsAdvancedView" class="settings-view hidden">
+
+          <div class="setting-section">
+            <div class="section-title">Cooldown</div>
+            <input id="cooldownMsInput"
+                   class="input-field"
+                   type="number"
+                   min="0"
+                   step="50"
+                   placeholder="ms (e.g. 500)"
+                   aria-label="Cooldown in milliseconds">
+          </div>
+
+          <div id="advancedDurationSection" class="setting-section">
+            <div class="section-title">Game length</div>
+            <input id="durationMinInput"
+                   class="input-field"
+                   type="number"
+                   min="1"
+                   step="1"
+                   placeholder="minutes (e.g. 10)"
+                   aria-label="Game length in minutes">
+          </div>
+
+          <div class="setting-section">
+            <div class="section-title">Lives</div>
+            <input id="livesInput"
+                   class="input-field"
+                   type="number"
+                   min="1"
+                   step="1"
+                   placeholder="(e.g. 3)"
+                   aria-label="Lives">
+          </div>
+
         </div>
+
+      </div>
+
+      <div class="create-area">
+        <button id="createGameBtn" class="primary-btn create-btn" type="button">Create</button>
+        <div id="createError" class="error-slot" aria-live="polite"></div>
+      </div>
 
     </div>
 
+  </div>
 </div>
 
 <script src="scripts/create.js"></script>
