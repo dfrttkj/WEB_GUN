@@ -2,10 +2,11 @@ import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 import constants from './config/constants.js';
 import handler from './utils/handler.js';
+import {log} from './utils/logger.js';
 
 const server = createServer((req, res) => {
     const ip = req.socket.remoteAddress;
-    console.log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
+    log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
 });
 
 const wss = new WebSocketServer({
