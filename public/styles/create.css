@@ -13,9 +13,11 @@ body {
     background: #1c1c1e;
     color: #f5f5f7;
     overflow: hidden;
+
+    /* helps native controls render dark where supported */
+    color-scheme: dark;
 }
 
-/* generic hide helper */
 .hidden { display: none !important; }
 
 
@@ -25,7 +27,7 @@ body {
     display: flex;
     gap: 32px;
     padding: 16px 40px;
-    background: rgba(44, 44, 46, 0.7);
+    background: rgba(44, 44, 46, 0.70);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255,255,255,0.05);
 }
@@ -62,12 +64,10 @@ body {
     background: #2c2c2e;
     padding: 24px;
     border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-
+    box-shadow: 0 10px 25px rgba(0,0,0,0.30);
     display: flex;
     flex-direction: column;
-
-    min-height: 0; /* critical for inner scrolling */
+    min-height: 0;
 }
 
 
@@ -78,21 +78,157 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
+    gap: 12px;
 }
 
-.switch-btn {
-    padding: 6px 16px;
-    background: #3a3a3c;
-    color: #f5f5f7;
-    border: none;
-    border-radius: 8px;
+.box-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.1px;
+}
+
+
+/* ========================= SEGMENTED CONTROL ========================= */
+
+.segmented {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    gap: 4px;
+}
+
+.seg-btn {
+    padding: 7px 12px;
+    border-radius: 10px;
+    border: 0;
+    background: transparent;
+    color: #9d9da1;
     cursor: pointer;
-    transition: 0.25s;
+    transition: 0.18s ease;
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1;
 }
-.switch-btn:hover { background: #4a4a4c; }
+
+.seg-btn.active {
+    background: rgba(255,255,255,0.10);
+    color: #f5f5f7;
+}
+
+.seg-btn:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.18);
+    outline-offset: 2px;
+}
+
+.seg-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.seg-btn:disabled:hover { background: transparent; }
 
 
-/* ========================= LEFT PANEL: VIEW WRAPPER ========================= */
+/* ========================= BUTTONS ========================= */
+
+.primary-btn {
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: #f5f5f7;
+    cursor: pointer;
+    transition: 0.20s ease;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.primary-btn:hover { background: rgba(255,255,255,0.12); }
+.primary-btn:active { transform: translateY(1px); }
+
+
+/* ========================= INPUTS (UNIFIED) ========================= */
+
+.input-field {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.06);
+    color: #f5f5f7;
+    outline: none;
+    font-size: 14px;
+    font-weight: 550;
+}
+
+.input-field:focus {
+    border-color: rgba(255,255,255,0.18);
+}
+
+.input-field::placeholder {
+    color: rgba(245,245,247,0.35);
+}
+
+/* Remove number spinners (clean dark look) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+
+/* ========================= LIVES STEPPER ========================= */
+
+.stepper {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.06);
+    overflow: hidden;
+}
+
+.stepper-input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: #f5f5f7;
+    padding: 10px 12px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 650;
+    outline: none;
+}
+
+.stepper-btn {
+    width: 46px;
+    border: 0;
+    background: transparent;
+    color: #f5f5f7;
+    cursor: pointer;
+    transition: 0.18s ease;
+    font-size: 16px;
+    font-weight: 900;
+}
+
+.stepper-btn:hover { background: rgba(255,255,255,0.08); }
+.stepper-btn:active { transform: translateY(1px); }
+
+.stepper-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+.stepper-btn:disabled:hover { background: transparent; }
+
+
+/* ========================= LEFT PANEL WRAPPER ========================= */
 
 .view-wrapper {
     flex: 1;
@@ -108,23 +244,6 @@ body {
     flex-direction: column;
     min-height: 0;
 }
-
-
-/* ========================= PRIMARY BUTTON ========================= */
-
-.primary-btn {
-    padding: 10px 14px;
-    border: 1px solid rgba(255,255,255,0.10);
-    border-radius: 10px;
-    background: rgba(255,255,255,0.08);
-    color: #f5f5f7;
-    cursor: pointer;
-    transition: 0.2s ease;
-    font-size: 14px;
-    font-weight: 600;
-}
-.primary-btn:hover { background: rgba(255,255,255,0.12); }
-.primary-btn:active { transform: translateY(1px); }
 
 
 /* ========================= PLAYERS TABLE ========================= */
@@ -178,7 +297,6 @@ body {
 .player-table th:nth-child(2), .player-table td:nth-child(2),
 .player-table th:nth-child(3), .player-table td:nth-child(3) { width: 44%; }
 
-/* Row hover (keeps gradient) */
 .player-table tbody tr { transition: background-color 0.18s ease, filter 0.18s ease; }
 .player-table tbody tr:hover { background-color: rgba(255,255,255,0.04); filter: brightness(1.03); }
 
@@ -189,11 +307,10 @@ body {
 }
 
 .player-team-cell { cursor: pointer; user-select: none; }
-.player-team-cell:focus {
-    outline: 1px solid rgba(255,255,255,0.16);
-    outline-offset: -2px;
-    border-radius: 8px;
-}
+.player-team-cell.team-locked { cursor: default; }
+
+
+/* ========================= TEAM PILL ========================= */
 
 .team-pill {
     display: inline-flex;
@@ -221,7 +338,7 @@ body {
     white-space: nowrap;
 }
 
-.team-pill--empty {
+.team-pill--muted {
     background: rgba(255,255,255,0.04);
     border-color: rgba(255,255,255,0.08);
     color: #9d9da1;
@@ -313,17 +430,6 @@ body {
     gap: 10px;
 }
 
-#teamNameInput {
-    padding: 10px;
-    background: #2c2c2e;
-    color: #f5f5f7;
-    border-radius: 10px;
-    border: 1px solid #3a3a3c;
-    outline: none;
-}
-
-#teamNameInput:focus { border-color: rgba(255,255,255,0.18); }
-
 .teams-table-scroll {
     flex: 1;
     overflow-y: auto;
@@ -366,7 +472,6 @@ body {
     box-shadow: 0 1px 0 rgba(0,0,0,0.35);
 }
 
-/* Column widths */
 .teams-table th:nth-child(1), .teams-table td:nth-child(1) { width: 14%; }
 .teams-table th:nth-child(2), .teams-table td:nth-child(2) { width: 68%; }
 .teams-table th:nth-child(3), .teams-table td:nth-child(3) { width: 18%; }
@@ -378,7 +483,6 @@ body {
     gap: 10px;
 }
 
-/* Color dot label with invisible input */
 .color-dot {
     --dot-color: #9d9da1;
     position: relative;
@@ -390,6 +494,7 @@ body {
     cursor: pointer;
     display: inline-block;
 }
+
 .color-dot:hover { border-color: rgba(255,255,255,0.35); }
 
 .color-dot .color-input {
@@ -404,7 +509,6 @@ body {
     margin: 0;
 }
 
-/* Remove button */
 .remove-btn {
     width: 34px;
     height: 34px;
@@ -415,45 +519,14 @@ body {
     cursor: pointer;
     transition: 0.2s ease;
     line-height: 1;
-    font-weight: 700;
+    font-weight: 800;
 }
+
 .remove-btn:hover { background: rgba(255,255,255,0.12); }
 .remove-btn:active { transform: translateY(1px); }
 
 
-/* ========================= RIGHT PANEL: GAME SETTINGS ========================= */
-
-.segmented {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.10);
-    gap: 4px;
-}
-
-.seg-btn {
-    padding: 7px 12px;
-    border-radius: 10px;
-    border: 0;
-    background: transparent;
-    color: #9d9da1;
-    cursor: pointer;
-    transition: 0.18s ease;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.seg-btn.active {
-    background: rgba(255,255,255,0.10);
-    color: #f5f5f7;
-}
-
-.seg-btn:focus-visible {
-    outline: 2px solid rgba(255,255,255,0.18);
-    outline-offset: 2px;
-}
+/* ========================= SETTINGS ========================= */
 
 .settings-wrapper {
     flex: 1;
@@ -486,7 +559,7 @@ body {
     font-size: 13px;
     color: #9d9da1;
     margin-bottom: 10px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .choice-row {
@@ -503,7 +576,7 @@ body {
     color: #f5f5f7;
     cursor: pointer;
     transition: 0.18s ease;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 13px;
 }
 
@@ -515,27 +588,131 @@ body {
     border-color: rgba(255,255,255,0.16);
 }
 
-.select-field,
-.input-field {
-    width: 100%;
-    padding: 10px 12px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.06);
-    color: #f5f5f7;
-    outline: none;
-    font-size: 14px;
+
+/* ========================= CREATE AREA + ERROR SLOT ========================= */
+
+.create-area {
+    margin-top: 16px;
 }
 
-.select-field:focus,
-.input-field:focus {
+.create-btn {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 14px;
+}
+
+.error-slot {
+    margin-top: 10px;
+    min-height: 44px;
+    color: #ff453a;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+
+/* ========================= MODE OVERLAY (BLUR) ========================= */
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(14px);
+}
+
+.modal {
+    width: min(760px, 100%);
+    background: rgba(44, 44, 46, 0.96);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 18px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+    padding: 22px;
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+
+.modal-sub {
+    color: #9d9da1;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.mode-grid {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 760px) {
+    .mode-grid { grid-template-columns: 1fr; }
+}
+
+.mode-card {
+    text-align: left;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.04);
+    color: #f5f5f7;
+    cursor: pointer;
+    transition: 0.18s ease;
+}
+
+.mode-card:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(255,255,255,0.14);
+}
+
+.mode-card.selected {
+    background: rgba(255,255,255,0.10);
     border-color: rgba(255,255,255,0.18);
 }
 
-.field { display: flex; flex-direction: column; gap: 8px; }
+.mode-name {
+    font-weight: 850;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
 
-.field-label {
+.mode-desc {
+    color: #c7c7cc;
     font-size: 13px;
+    line-height: 1.35;
+    margin-bottom: 10px;
+}
+
+.mode-points {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.mode-points li {
+    font-size: 12px;
     color: #9d9da1;
-    font-weight: 600;
+    padding: 6px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+}
+
+.modal-actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.modal-primary {
+    padding: 12px 16px;
+    border-radius: 14px;
 }
