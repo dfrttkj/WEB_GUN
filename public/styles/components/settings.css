@@ -1,0 +1,46 @@
+/* ========================= SETTINGS ========================= */
+
+.settings-wrapper { flex: 1; min-height: 0; overflow: hidden; }
+
+.settings-view {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding-right: 2px;
+}
+
+.settings-view::-webkit-scrollbar { width: 8px; }
+.settings-view::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
+.settings-view::-webkit-scrollbar-thumb:hover { background: #777; }
+
+.setting-section {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.setting-section:first-child { padding-top: 4px; }
+.setting-section:last-child { border-bottom: 0; }
+
+.section-title {
+  font-size: 13px;
+  color: #9d9da1;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.create-area { margin-top: 16px; }
+
+.create-btn {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+}
+
+.error-slot {
+  margin-top: 10px;
+  min-height: 44px;   /* so nothing shifts when an error appears */
+  color: #ff453a;
+  font-size: 13px;
+  line-height: 1.35;
+}

@@ -1,0 +1,50 @@
+/* ========================= LOCK / BLUR ========================= */
+
+.content-shell {
+  position: relative;
+  height: calc(100vh - 64px);
+}
+
+.content-shell.is-locked {
+  filter: blur(14px);
+  opacity: 0.7;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Overlay above blurred content */
+.locked-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 64px;
+  bottom: 0;
+  z-index: 15000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0,0,0,0.15);
+}
+
+.locked-card {
+  width: min(720px, 100%);
+  background: rgba(44, 44, 46, 0.92);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+  padding: 22px;
+  text-align: center;
+}
+
+.locked-title {
+  font-size: 18px;
+  font-weight: 850;
+  margin-bottom: 6px;
+}
+
+.locked-text {
+  color: #9d9da1;
+  font-size: 13px;
+  line-height: 1.4;
+}

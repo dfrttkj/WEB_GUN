@@ -1,0 +1,98 @@
+/* ========================= CONTROLS ========================= */
+
+.primary-btn {
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  color: #f5f5f7;
+  cursor: pointer;
+  transition: 0.20s ease;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.primary-btn:hover { background: rgba(255,255,255,0.12); }
+.primary-btn:active { transform: translateY(1px); }
+
+.input-field {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: #f5f5f7;
+  outline: none;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.input-field:focus { border-color: rgba(255,255,255,0.18); }
+.input-field::placeholder { color: rgba(245,245,247,0.35); }
+
+/* Remove number spinners (better dark look) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { appearance: textfield; -moz-appearance: textfield; }
+
+/* Stepper */
+.stepper {
+  display: flex;
+  align-items: stretch;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.stepper-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #f5f5f7;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 650;
+  outline: none;
+}
+
+.stepper-btn {
+  width: 46px;
+  border: 0;
+  background: transparent;
+  color: #f5f5f7;
+  cursor: pointer;
+  transition: 0.18s ease;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.stepper-btn:hover { background: rgba(255,255,255,0.08); }
+.stepper-btn:active { transform: translateY(1px); }
+.stepper-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.stepper-btn:disabled:hover { background: transparent; }
+
+/* Choice buttons */
+.choice-row { display: flex; gap: 10px; }
+
+.choice-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: #f5f5f7;
+  cursor: pointer;
+  transition: 0.18s ease;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.choice-btn:hover { background: rgba(255,255,255,0.10); }
+.choice-btn:active { transform: translateY(1px); }
+.choice-btn.active {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.16);
+}

@@ -1,0 +1,63 @@
+/* ========================= NAVBAR ========================= */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 40px;
+  background: rgba(44, 44, 46, 0.70);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.nav-left { display: flex; gap: 32px; align-items: center; }
+
+.nav a {
+  text-decoration: none;
+  color: #f5f5f7;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.25s ease;
+}
+
+.nav a:hover { background: rgba(255,255,255,0.08); }
+
+.nav-right { display: flex; align-items: center; gap: 10px; }
+
+.lock-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: #f5f5f7;
+  cursor: pointer;
+  transition: 0.20s ease;
+  display: grid;
+  place-items: center;
+}
+
+.lock-btn:hover { background: rgba(255,255,255,0.10); }
+.lock-btn:active { transform: translateY(1px); }
+
+.lock-icon { font-size: 16px; line-height: 1; }
+
+.unlock-input-wrap { display: none; }
+.unlock-input-wrap.show { display: block; }
+
+.unlock-input {
+  width: 160px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  color: #f5f5f7;
+  outline: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.unlock-input::placeholder { color: rgba(245,245,247,0.35); }
+.unlock-input:focus { border-color: rgba(255,255,255,0.18); }
