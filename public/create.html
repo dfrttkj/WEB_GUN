@@ -16,6 +16,7 @@
 
 <div class="page-layout">
 
+    <!-- LEFT PANEL -->
     <div class="table-container">
 
         <div class="box-header">
@@ -25,6 +26,7 @@
 
         <div class="view-wrapper">
 
+            <!-- PLAYERS VIEW -->
             <div id="playersView" class="tab-view">
                 <div class="table-scroll">
                     <table class="player-table">
@@ -40,6 +42,7 @@
                 </div>
             </div>
 
+            <!-- TEAMS VIEW -->
             <div id="teamsView" class="tab-view hidden">
                 <div class="teams-content">
 
@@ -67,12 +70,87 @@
         </div>
     </div>
 
-    <div class="right-placeholder">
-        <p>Coming soon...</p>
+    <!-- RIGHT PANEL: GAME SETTINGS -->
+    <div class="settings-container">
+
+        <div class="box-header">
+            <h2>Game settings</h2>
+
+            <div class="segmented" role="tablist" aria-label="Settings mode">
+                <button id="settingsSimpleBtn" class="seg-btn active" type="button" role="tab" aria-selected="true">
+                    Simple
+                </button>
+                <button id="settingsAdvancedBtn" class="seg-btn" type="button" role="tab" aria-selected="false">
+                    Advanced
+                </button>
+            </div>
+        </div>
+
+        <div class="settings-wrapper">
+
+            <!-- SIMPLE VIEW -->
+            <div id="settingsSimpleView" class="settings-view">
+
+                <div class="setting-section">
+                    <div class="section-title">Cooldown</div>
+                    <div class="choice-row" role="group" aria-label="Cooldown presets">
+                        <button class="choice-btn" type="button" data-cooldown-preset="fast">Fast</button>
+                        <button class="choice-btn" type="button" data-cooldown-preset="intermediate">Intermediate</button>
+                        <button class="choice-btn" type="button" data-cooldown-preset="slow">Slow</button>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="section-title">Game length</div>
+                    <div class="choice-row" role="group" aria-label="Game length presets">
+                        <button class="choice-btn" type="button" data-duration-min="5">5 min</button>
+                        <button class="choice-btn" type="button" data-duration-min="10">10 min</button>
+                        <button class="choice-btn" type="button" data-duration-min="15">15 min</button>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="section-title">Lives</div>
+                    <select id="livesSelect" class="select-field" aria-label="Lives select"></select>
+                </div>
+
+            </div>
+
+            <!-- ADVANCED VIEW -->
+            <div id="settingsAdvancedView" class="settings-view hidden">
+
+                <div class="setting-section">
+                    <div class="section-title">Cooldown</div>
+                    <div class="field">
+                        <label class="field-label" for="cooldownMsInput">Cooldown (ms)</label>
+                        <input id="cooldownMsInput" class="input-field" type="number" min="0" step="50" placeholder="e.g. 500">
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="section-title">Game length</div>
+                    <div class="field">
+                        <label class="field-label" for="durationMinInput">Game length (min)</label>
+                        <input id="durationMinInput" class="input-field" type="number" min="1" step="1" placeholder="e.g. 10">
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <div class="section-title">Lives</div>
+                    <div class="field">
+                        <label class="field-label" for="livesInput">Lives</label>
+                        <input id="livesInput" class="input-field" type="number" min="1" step="1" placeholder="e.g. 3">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
 </div>
 
-<script src="scripts/script.js"></script>
+<script src="scripts/create.js"></script>
 </body>
 </html>

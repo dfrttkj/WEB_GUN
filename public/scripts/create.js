@@ -1,12 +1,37 @@
 console.log("script.js loaded");
 
+/* =========================
+   STATE
+========================= */
+
 const TEAM_ID_MIN = 1;
 const TEAM_ID_MAX = 249;
 
-const playersState = new Map();
+// Player state
+const playersState = new Map(); // playerId -> { name: string, teamId: number|null }
 
-let teams = [];
-let usedTeamIds = new Set();
+// Teams
+let teams = [];              // { id:number, name:string, color:string }
+let usedTeamIds = new Set(); // used ids
+
+// Game settings state (shared between Simple + Advanced)
+const gameSettings = {
+    cooldownMs: 500,     // default
+    durationMin: 10,     // default
+    lives: 3             // default
+};
+
+// Presets for Simple mode
+const COOLDOWN_PRESETS = {
+    fast: 250,
+    intermediate: 500,
+    slow: 800
+};
+
+
+/* =========================
+   HELPERS
+========================= */
 
 function escapeHtml(str) {
     return String(str)
@@ -43,8 +68,29 @@ function findTeamById(teamId) {
     return null;
 }
 
-// Beispiel IDs – später durch WebSocket ersetzt
-let availablePlayerIDs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+function getNextFreeTeamId() {
+    for (let id = TEAM_ID_MIN; id <= TEAM_ID_MAX; id++) {
+        if (!usedTeamIds.has(id)) return id;
+    }
+    return null;
+}
+
+function clampInt(value, min, max) {
+    const n = Number(value);
+    if (!Number.isFinite(n)) return min;
+    const i = Math.floor(n);
+    if (i < min) return min;
+    if (i > max) return max;
+    return i;
+}
+
+
+/* =========================
+   PLAYERS TABLE
+========================= */
+
+// Example IDs (later WebSocket)
+let availablePlayerIDs = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
 const playerTableBody = document.getElementById("playerTableBody");
 
@@ -73,9 +119,7 @@ function enforceMaxLengthContenteditable(cell, maxLength = 32, onAfterChange = n
             sel.addRange(range);
         }
 
-        if (onAfterChange) {
-            onAfterChange(cell.innerText.replace(/\n/g, ""));
-        }
+        if (onAfterChange) onAfterChange(cell.innerText.replace(/\n/g, ""));
     });
 }
 
@@ -134,24 +178,19 @@ function applyTeamRowTint(rowEl, teamId) {
     rowEl.style.backgroundColor = "transparent";
 }
 
-function refreshAllPlayerRowTints() {
+function refreshAllPlayerTeamCellsAndTints() {
     const rows = document.querySelectorAll(".player-row");
     rows.forEach(row => {
         const pid = Number(row.getAttribute("data-player-id"));
         if (!Number.isFinite(pid)) return;
-        const st = playersState.get(pid);
-        applyTeamRowTint(row, st ? st.teamId : null);
-    });
-}
-
-function refreshAllPlayerTeamCells() {
-    const cells = document.querySelectorAll(".player-team-cell");
-    cells.forEach(cell => {
-        const pid = Number(cell.getAttribute("data-player-id"));
-        if (!Number.isFinite(pid)) return;
 
         const st = playersState.get(pid);
-        cell.innerHTML = renderTeamPillHTML(st ? st.teamId : null);
+        const teamId = st ? st.teamId : null;
+
+        const cell = row.querySelector(".player-team-cell");
+        if (cell) cell.innerHTML = renderTeamPillHTML(teamId);
+
+        applyTeamRowTint(row, teamId);
     });
 }
 
@@ -193,6 +232,11 @@ function renderPlayerTable() {
 
 renderPlayerTable();
 
+
+/* =========================
+   LEFT: SWITCH BUTTON (Players <-> Teams)
+========================= */
+
 const switchBtn = document.getElementById("switchViewBtn");
 const boxTitle = document.getElementById("boxTitle");
 const playersView = document.getElementById("playersView");
@@ -220,16 +264,14 @@ if (switchBtn && boxTitle && playersView && teamsView) {
     });
 }
 
+
+/* =========================
+   TEAMS LOGIC (IDs 1–249 + reuse gaps + color dot)
+========================= */
+
 const teamNameInput = document.getElementById("teamNameInput");
 const addTeamBtn = document.getElementById("addTeamBtn");
 const teamTableBody = document.getElementById("teamTableBody");
-
-function getNextFreeTeamId() {
-    for (let id = TEAM_ID_MIN; id <= TEAM_ID_MAX; id++) {
-        if (!usedTeamIds.has(id)) return id;
-    }
-    return null;
-}
 
 function renderTeamsTable() {
     if (!teamTableBody) return;
@@ -278,21 +320,20 @@ function addTeam(rawName) {
     usedTeamIds.add(newId);
 
     renderTeamsTable();
-    refreshAllPlayerTeamCells();
-    refreshAllPlayerRowTints();
+    refreshAllPlayerTeamCellsAndTints();
 }
 
 function removeTeamById(teamId) {
     teams = teams.filter(t => t.id !== teamId);
     usedTeamIds.delete(teamId);
 
+    // reset players using this team
     for (const [pid, st] of playersState.entries()) {
         if (st.teamId === teamId) st.teamId = null;
     }
 
     renderTeamsTable();
-    refreshAllPlayerTeamCells();
-    refreshAllPlayerRowTints();
+    refreshAllPlayerTeamCellsAndTints();
 }
 
 function setTeamColor(teamId, color) {
@@ -322,11 +363,12 @@ if (addTeamBtn && teamNameInput) {
 
 document.addEventListener("click", (e) => {
     const removeBtn = e.target.closest(".remove-btn");
-    if (removeBtn) {
-        const teamId = Number(removeBtn.getAttribute("data-team-id"));
-        if (Number.isFinite(teamId)) removeTeamById(teamId);
-        return;
-    }
+    if (!removeBtn) return;
+
+    const teamId = Number(removeBtn.getAttribute("data-team-id"));
+    if (!Number.isFinite(teamId)) return;
+
+    removeTeamById(teamId);
 });
 
 document.addEventListener("input", (e) => {
@@ -337,27 +379,31 @@ document.addEventListener("input", (e) => {
     if (!Number.isFinite(teamId)) return;
 
     const color = colorInput.value;
-
     setTeamColor(teamId, color);
 
     const dot = document.querySelector(`.color-dot[data-team-id="${teamId}"]`);
     if (dot) dot.style.setProperty("--dot-color", color);
 
-    refreshAllPlayerTeamCells();
-    refreshAllPlayerRowTints();
+    refreshAllPlayerTeamCellsAndTints();
 });
+
+
+/* =========================
+   TEAM PICKER POPUP (Players -> Team selection)
+========================= */
 
 let teamPickerEl = null;
 
 function closeTeamPicker() {
-    if (teamPickerEl) {
-        teamPickerEl.remove();
-        teamPickerEl = null;
-        document.removeEventListener("pointerdown", onDocPointerDown, true);
-        document.removeEventListener("keydown", onDocKeyDown, true);
-        const scroller = document.querySelector(".table-scroll");
-        if (scroller) scroller.removeEventListener("scroll", closeTeamPicker, { passive: true });
-    }
+    if (!teamPickerEl) return;
+    teamPickerEl.remove();
+    teamPickerEl = null;
+
+    document.removeEventListener("pointerdown", onDocPointerDown, true);
+    document.removeEventListener("keydown", onDocKeyDown, true);
+
+    const scroller = document.querySelector(".table-scroll");
+    if (scroller) scroller.removeEventListener("scroll", closeTeamPicker, { passive: true });
 }
 
 function onDocPointerDown(ev) {
@@ -377,6 +423,7 @@ function openTeamPicker(anchorCell, playerId) {
     menu.className = "team-picker";
     menu.setAttribute("role", "listbox");
 
+    // None option
     const noneBtn = document.createElement("button");
     noneBtn.type = "button";
     noneBtn.className = "team-picker__item";
@@ -433,6 +480,7 @@ function openTeamPicker(anchorCell, playerId) {
     document.body.appendChild(menu);
     teamPickerEl = menu;
 
+    // Positioning
     const rect = anchorCell.getBoundingClientRect();
     const padding = 8;
 
@@ -474,9 +522,7 @@ document.addEventListener("click", (e) => {
 
 document.addEventListener("keydown", (e) => {
     const active = document.activeElement;
-    if (!active) return;
-
-    if (!active.classList || !active.classList.contains("player-team-cell")) return;
+    if (!active || !active.classList || !active.classList.contains("player-team-cell")) return;
 
     if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
@@ -485,3 +531,152 @@ document.addEventListener("keydown", (e) => {
         openTeamPicker(active, playerId);
     }
 });
+
+
+/* =========================
+   RIGHT PANEL: GAME SETTINGS (Simple <-> Advanced)
+========================= */
+
+const settingsSimpleBtn = document.getElementById("settingsSimpleBtn");
+const settingsAdvancedBtn = document.getElementById("settingsAdvancedBtn");
+const settingsSimpleView = document.getElementById("settingsSimpleView");
+const settingsAdvancedView = document.getElementById("settingsAdvancedView");
+
+const livesSelect = document.getElementById("livesSelect");
+const cooldownMsInput = document.getElementById("cooldownMsInput");
+const durationMinInput = document.getElementById("durationMinInput");
+const livesInput = document.getElementById("livesInput");
+
+function setSettingsMode(mode) {
+    if (!settingsSimpleBtn || !settingsAdvancedBtn || !settingsSimpleView || !settingsAdvancedView) return;
+
+    const isSimple = mode === "simple";
+
+    settingsSimpleBtn.classList.toggle("active", isSimple);
+    settingsAdvancedBtn.classList.toggle("active", !isSimple);
+
+    settingsSimpleBtn.setAttribute("aria-selected", String(isSimple));
+    settingsAdvancedBtn.setAttribute("aria-selected", String(!isSimple));
+
+    settingsSimpleView.classList.toggle("hidden", !isSimple);
+    settingsAdvancedView.classList.toggle("hidden", isSimple);
+
+    syncSettingsUI();
+}
+
+function populateLivesSelect(maxLives = 99) {
+    if (!livesSelect) return;
+
+    livesSelect.innerHTML = "";
+    for (let i = 1; i <= maxLives; i++) {
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = String(i);
+        livesSelect.appendChild(opt);
+    }
+}
+
+function markActiveButtons() {
+    // cooldown preset buttons
+    const presetBtns = document.querySelectorAll('[data-cooldown-preset]');
+    presetBtns.forEach(btn => btn.classList.remove("active"));
+
+    const preset = getCooldownPresetName(gameSettings.cooldownMs);
+    if (preset) {
+        const btn = document.querySelector(`[data-cooldown-preset="${preset}"]`);
+        if (btn) btn.classList.add("active");
+    }
+
+    // duration buttons
+    const durBtns = document.querySelectorAll('[data-duration-min]');
+    durBtns.forEach(btn => btn.classList.remove("active"));
+
+    const durBtn = document.querySelector(`[data-duration-min="${gameSettings.durationMin}"]`);
+    if (durBtn) durBtn.classList.add("active");
+}
+
+function getCooldownPresetName(ms) {
+    if (ms === COOLDOWN_PRESETS.fast) return "fast";
+    if (ms === COOLDOWN_PRESETS.intermediate) return "intermediate";
+    if (ms === COOLDOWN_PRESETS.slow) return "slow";
+    return null;
+}
+
+function syncSettingsUI() {
+    markActiveButtons();
+
+    if (livesSelect) livesSelect.value = String(gameSettings.lives);
+
+    if (cooldownMsInput) cooldownMsInput.value = String(gameSettings.cooldownMs);
+    if (durationMinInput) durationMinInput.value = String(gameSettings.durationMin);
+    if (livesInput) livesInput.value = String(gameSettings.lives);
+}
+
+function setGameSettings(partial) {
+    if (typeof partial.cooldownMs === "number") {
+        gameSettings.cooldownMs = clampInt(partial.cooldownMs, 0, 600000);
+    }
+    if (typeof partial.durationMin === "number") {
+        gameSettings.durationMin = clampInt(partial.durationMin, 1, 999);
+    }
+    if (typeof partial.lives === "number") {
+        gameSettings.lives = clampInt(partial.lives, 1, 99);
+    }
+    syncSettingsUI();
+}
+
+// init
+if (settingsSimpleBtn && settingsAdvancedBtn) {
+    settingsSimpleBtn.addEventListener("click", () => setSettingsMode("simple"));
+    settingsAdvancedBtn.addEventListener("click", () => setSettingsMode("advanced"));
+}
+
+populateLivesSelect(99);
+syncSettingsUI();
+
+// Simple: button handlers
+document.addEventListener("click", (e) => {
+    const cooldownBtn = e.target.closest("[data-cooldown-preset]");
+    if (cooldownBtn) {
+        const preset = cooldownBtn.getAttribute("data-cooldown-preset");
+        const ms = COOLDOWN_PRESETS[preset];
+        if (typeof ms === "number") setGameSettings({ cooldownMs: ms });
+        return;
+    }
+
+    const durBtn = e.target.closest("[data-duration-min]");
+    if (durBtn) {
+        const min = Number(durBtn.getAttribute("data-duration-min"));
+        if (Number.isFinite(min)) setGameSettings({ durationMin: min });
+    }
+});
+
+// Simple: lives select
+if (livesSelect) {
+    livesSelect.addEventListener("change", () => {
+        const v = Number(livesSelect.value);
+        if (Number.isFinite(v)) setGameSettings({ lives: v });
+    });
+}
+
+// Advanced: inputs
+if (cooldownMsInput) {
+    cooldownMsInput.addEventListener("input", () => {
+        const v = Number(cooldownMsInput.value);
+        if (Number.isFinite(v)) setGameSettings({ cooldownMs: v });
+    });
+}
+
+if (durationMinInput) {
+    durationMinInput.addEventListener("input", () => {
+        const v = Number(durationMinInput.value);
+        if (Number.isFinite(v)) setGameSettings({ durationMin: v });
+    });
+}
+
+if (livesInput) {
+    livesInput.addEventListener("input", () => {
+        const v = Number(livesInput.value);
+        if (Number.isFinite(v)) setGameSettings({ lives: v });
+    });
+}

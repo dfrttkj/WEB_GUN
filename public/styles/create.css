@@ -6,9 +6,7 @@
     box-sizing: border-box;
 }
 
-html, body {
-    height: 100%;
-}
+html, body { height: 100%; }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
@@ -16,6 +14,9 @@ body {
     color: #f5f5f7;
     overflow: hidden;
 }
+
+/* generic hide helper */
+.hidden { display: none !important; }
 
 
 /* ========================= NAVBAR ========================= */
@@ -39,9 +40,7 @@ body {
     transition: 0.25s ease;
 }
 
-.nav a:hover {
-    background: rgba(255,255,255,0.08);
-}
+.nav a:hover { background: rgba(255,255,255,0.08); }
 
 
 /* ========================= PAGE LAYOUT ========================= */
@@ -58,7 +57,7 @@ body {
 /* ========================= PANELS ========================= */
 
 .table-container,
-.right-placeholder {
+.settings-container {
     width: calc(50% - 20px);
     background: #2c2c2e;
     padding: 24px;
@@ -67,13 +66,8 @@ body {
 
     display: flex;
     flex-direction: column;
-    min-height: 0;
-}
 
-.right-placeholder {
-    justify-content: center;
-    align-items: center;
-    color: #9d9da1;
+    min-height: 0; /* critical for inner scrolling */
 }
 
 
@@ -95,13 +89,10 @@ body {
     cursor: pointer;
     transition: 0.25s;
 }
-
-.switch-btn:hover {
-    background: #4a4a4c;
-}
+.switch-btn:hover { background: #4a4a4c; }
 
 
-/* ========================= VIEW WRAPPER ========================= */
+/* ========================= LEFT PANEL: VIEW WRAPPER ========================= */
 
 .view-wrapper {
     flex: 1;
@@ -118,10 +109,6 @@ body {
     min-height: 0;
 }
 
-.tab-view.hidden {
-    display: none;
-}
-
 
 /* ========================= PRIMARY BUTTON ========================= */
 
@@ -136,14 +123,8 @@ body {
     font-size: 14px;
     font-weight: 600;
 }
-
-.primary-btn:hover {
-    background: rgba(255,255,255,0.12);
-}
-
-.primary-btn:active {
-    transform: translateY(1px);
-}
+.primary-btn:hover { background: rgba(255,255,255,0.12); }
+.primary-btn:active { transform: translateY(1px); }
 
 
 /* ========================= PLAYERS TABLE ========================= */
@@ -156,18 +137,9 @@ body {
     scrollbar-gutter: stable;
 }
 
-.table-scroll::-webkit-scrollbar {
-    width: 8px;
-}
-
-.table-scroll::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 8px;
-}
-
-.table-scroll::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
+.table-scroll::-webkit-scrollbar { width: 8px; }
+.table-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
+.table-scroll::-webkit-scrollbar-thumb:hover { background: #777; }
 
 .player-table {
     width: 100%;
@@ -192,6 +164,7 @@ body {
     background: transparent;
 }
 
+/* Sticky header */
 .player-table thead th {
     position: sticky;
     top: 0;
@@ -200,22 +173,14 @@ body {
     box-shadow: 0 1px 0 rgba(0,0,0,0.35);
 }
 
-.player-table th:nth-child(1),
-.player-table td:nth-child(1) { width: 12%; }
+/* widths */
+.player-table th:nth-child(1), .player-table td:nth-child(1) { width: 12%; }
+.player-table th:nth-child(2), .player-table td:nth-child(2),
+.player-table th:nth-child(3), .player-table td:nth-child(3) { width: 44%; }
 
-.player-table th:nth-child(2),
-.player-table td:nth-child(2),
-.player-table th:nth-child(3),
-.player-table td:nth-child(3) { width: 44%; }
-
-.player-table tbody tr {
-    transition: background-color 0.18s ease, filter 0.18s ease;
-}
-
-.player-table tbody tr:hover {
-    background-color: rgba(255,255,255,0.04);
-    filter: brightness(1.03);
-}
+/* Row hover (keeps gradient) */
+.player-table tbody tr { transition: background-color 0.18s ease, filter 0.18s ease; }
+.player-table tbody tr:hover { background-color: rgba(255,255,255,0.04); filter: brightness(1.03); }
 
 .player-table td[contenteditable="true"]:focus {
     outline: 1px solid rgba(255,255,255,0.16);
@@ -223,11 +188,7 @@ body {
     border-radius: 8px;
 }
 
-.player-team-cell {
-    cursor: pointer;
-    user-select: none;
-}
-
+.player-team-cell { cursor: pointer; user-select: none; }
 .player-team-cell:focus {
     outline: 1px solid rgba(255,255,255,0.16);
     outline-offset: -2px;
@@ -266,6 +227,7 @@ body {
     color: #9d9da1;
 }
 
+
 /* ========================= TEAM PICKER POPUP ========================= */
 
 .team-picker {
@@ -285,14 +247,8 @@ body {
     padding: 8px;
 }
 
-.team-picker::-webkit-scrollbar {
-    width: 8px;
-}
-
-.team-picker::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 8px;
-}
+.team-picker::-webkit-scrollbar { width: 8px; }
+.team-picker::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
 
 .team-picker__item {
     width: 100%;
@@ -310,13 +266,8 @@ body {
     transition: 0.15s ease;
 }
 
-.team-picker__item:hover {
-    background: rgba(255,255,255,0.08);
-}
-
-.team-picker__item:active {
-    transform: translateY(1px);
-}
+.team-picker__item:hover { background: rgba(255,255,255,0.08); }
+.team-picker__item:active { transform: translateY(1px); }
 
 .team-picker__dot {
     width: 12px;
@@ -346,6 +297,7 @@ body {
     font-size: 14px;
 }
 
+
 /* ========================= TEAMS VIEW ========================= */
 
 .teams-content {
@@ -370,9 +322,7 @@ body {
     outline: none;
 }
 
-#teamNameInput:focus {
-    border-color: rgba(255,255,255,0.18);
-}
+#teamNameInput:focus { border-color: rgba(255,255,255,0.18); }
 
 .teams-table-scroll {
     flex: 1;
@@ -382,18 +332,9 @@ body {
     scrollbar-gutter: stable;
 }
 
-.teams-table-scroll::-webkit-scrollbar {
-    width: 8px;
-}
-
-.teams-table-scroll::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 8px;
-}
-
-.teams-table-scroll::-webkit-scrollbar-thumb:hover {
-    background: #777;
-}
+.teams-table-scroll::-webkit-scrollbar { width: 8px; }
+.teams-table-scroll::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
+.teams-table-scroll::-webkit-scrollbar-thumb:hover { background: #777; }
 
 .teams-table {
     width: 100%;
@@ -425,14 +366,10 @@ body {
     box-shadow: 0 1px 0 rgba(0,0,0,0.35);
 }
 
-.teams-table th:nth-child(1),
-.teams-table td:nth-child(1) { width: 14%; }
-
-.teams-table th:nth-child(2),
-.teams-table td:nth-child(2) { width: 68%; }
-
-.teams-table th:nth-child(3),
-.teams-table td:nth-child(3) { width: 18%; }
+/* Column widths */
+.teams-table th:nth-child(1), .teams-table td:nth-child(1) { width: 14%; }
+.teams-table th:nth-child(2), .teams-table td:nth-child(2) { width: 68%; }
+.teams-table th:nth-child(3), .teams-table td:nth-child(3) { width: 18%; }
 
 .team-actions {
     display: flex;
@@ -441,6 +378,7 @@ body {
     gap: 10px;
 }
 
+/* Color dot label with invisible input */
 .color-dot {
     --dot-color: #9d9da1;
     position: relative;
@@ -452,10 +390,7 @@ body {
     cursor: pointer;
     display: inline-block;
 }
-
-.color-dot:hover {
-    border-color: rgba(255,255,255,0.35);
-}
+.color-dot:hover { border-color: rgba(255,255,255,0.35); }
 
 .color-dot .color-input {
     position: absolute;
@@ -469,6 +404,7 @@ body {
     margin: 0;
 }
 
+/* Remove button */
 .remove-btn {
     width: 34px;
     height: 34px;
@@ -481,11 +417,125 @@ body {
     line-height: 1;
     font-weight: 700;
 }
+.remove-btn:hover { background: rgba(255,255,255,0.12); }
+.remove-btn:active { transform: translateY(1px); }
 
-.remove-btn:hover {
-    background: rgba(255,255,255,0.12);
+
+/* ========================= RIGHT PANEL: GAME SETTINGS ========================= */
+
+.segmented {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    gap: 4px;
 }
 
-.remove-btn:active {
-    transform: translateY(1px);
+.seg-btn {
+    padding: 7px 12px;
+    border-radius: 10px;
+    border: 0;
+    background: transparent;
+    color: #9d9da1;
+    cursor: pointer;
+    transition: 0.18s ease;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.seg-btn.active {
+    background: rgba(255,255,255,0.10);
+    color: #f5f5f7;
+}
+
+.seg-btn:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.18);
+    outline-offset: 2px;
+}
+
+.settings-wrapper {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.settings-view {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-gutter: stable;
+    padding-right: 2px;
+}
+
+.settings-view::-webkit-scrollbar { width: 8px; }
+.settings-view::-webkit-scrollbar-thumb { background: #555; border-radius: 8px; }
+.settings-view::-webkit-scrollbar-thumb:hover { background: #777; }
+
+.setting-section {
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.setting-section:first-child { padding-top: 4px; }
+.setting-section:last-child { border-bottom: 0; }
+
+.section-title {
+    font-size: 13px;
+    color: #9d9da1;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.choice-row {
+    display: flex;
+    gap: 10px;
+}
+
+.choice-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.06);
+    color: #f5f5f7;
+    cursor: pointer;
+    transition: 0.18s ease;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.choice-btn:hover { background: rgba(255,255,255,0.10); }
+.choice-btn:active { transform: translateY(1px); }
+
+.choice-btn.active {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.16);
+}
+
+.select-field,
+.input-field {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.06);
+    color: #f5f5f7;
+    outline: none;
+    font-size: 14px;
+}
+
+.select-field:focus,
+.input-field:focus {
+    border-color: rgba(255,255,255,0.18);
+}
+
+.field { display: flex; flex-direction: column; gap: 8px; }
+
+.field-label {
+    font-size: 13px;
+    color: #9d9da1;
+    font-weight: 600;
 }
