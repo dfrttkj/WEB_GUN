@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 
-import { handleHttpRequest } from './routes/api.js';
+import { handleHttpRequest } from './api.js';
 import { handleConnection } from './websocket/handlers.js';
 import { getServerIp } from './utils/helpers.js';
 import { PORT, HOST, WS_PATH } from './config/constants.js';

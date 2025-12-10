@@ -1,7 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { PUBLIC_DIR } from '../config/constants.js';
-import { log } from '../utils/logger.js'; // Import Logger
+import { PUBLIC_DIR } from './config/constants.js';
+import { log } from './utils/logger.js'; // Import Logger
+
+const fs = require('fs');
+const path = require('path');
+const {PUBLIC_DIR} = require('./config/constants.js');
+const {log} = require('./utils/logger.js');
 
 const MIME_TYPES = {
     '.html': 'text/html',
