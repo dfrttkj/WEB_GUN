@@ -1,14 +1,32 @@
-import { createServer } from 'http';
-import { WebSocketServer } from 'ws';
-import constants from './config/constants.js';
-import handler from './utils/handler.js';
-import {log} from './utils/logger.js';
+const { createServer } = require('http');
+const { WebSocketServer } = require('ws');
+const constants = require('./config/constants.js');
+const handler = require('./utils/handler.js');
+const routesHandler = require('./routes/HTMLRoutes.js');
+//const {log} = require('./utils/logger.js');
+const fs = require('fs');
 
+const routes = new Map([
+    ["/create", routesHandler.sendCreateHTML],
+    ["/home", routesHandler.sendHomeHTML],
+    ["/leaderboard", routesHandler.sendLeaderboardHTML],
+    ["/styles/create.css", routesHandler.sendCreateCSS],
+    ["/scripts/create.js", routesHandler.sendCreateJS]
+]);
+
+// http server handler
 const server = createServer((req, res) => {
     const ip = req.socket.remoteAddress;
-    log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
+    console.log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
+
+    if (routes.has(req.url)) {
+        routes.get(req.url)(req, res);
+    } else {
+        routesHandler.sendNotfound(req, res);
+    }
 });
 
+// neuen Websocket
 const wss = new WebSocketServer({
     server,
     path: constants.WS_PATH
@@ -19,6 +37,7 @@ wss.on('connection', (ws, req) => {
     console.log('WS', 'Conn', `New connection established from ${ip}`);
 });
 
+// Websocket handler
 wss.on('message', (message) => {
     console.log(message.toString());
 
@@ -26,7 +45,7 @@ wss.on('message', (message) => {
     try {
         data = JSON.parse(message);
     } catch (error) {
-        console.log("Data could not be read");
+        log("Data could not be read");
     } 
 
     if (data) {

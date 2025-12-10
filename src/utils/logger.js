@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 // Ensure logs directory exists
 const LOG_DIR = path.resolve('logs');
@@ -20,7 +20,7 @@ function getTimestamp() {
  * @param {string} message - The main log message
  * @param {any} [data] - Optional object/data to stringify
  */
-export function log(level, category, message, data = null) {
+function log(level, category, message, data = null) {
     const timestamp = getTimestamp();
 
     // 1. Format for Console (Visual)
@@ -46,4 +46,8 @@ export function log(level, category, message, data = null) {
     } catch (err) {
         console.error("FAILED TO WRITE TO LOG FILE", err);
     }
+}
+
+module.exports = {
+    log
 }

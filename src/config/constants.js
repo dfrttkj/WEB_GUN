@@ -1,12 +1,12 @@
-import path from 'path';
+const path = require("path");
 
-export const PORT = process.env.PORT || 8080;
-export const HOST = process.env.HOST || '0.0.0.0';
-export const WS_PATH = process.env.PATH || '/';
-export const USERS_FILE = path.resolve('users.json');
-export const PUBLIC_DIR = path.resolve('public');
+const PORT = process.env.PORT || 8080;
+const HOST = process.env.HOST || '0.0.0.0';
+const WS_PATH = process.env.PATH || '/';
+const USERS_FILE = path.resolve('users.json');
+const PUBLIC_DIR = path.resolve('public');
 
-export default {
+module.exports = {
     PORT,
     HOST,
     WS_PATH,
