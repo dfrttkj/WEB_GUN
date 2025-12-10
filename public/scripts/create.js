@@ -671,8 +671,8 @@ function syncSettingsUI() {
 
 function setGameSettings(partial) {
     if (typeof partial.cooldownMs === "number") gameSettings.cooldownMs = clampInt(partial.cooldownMs, 0, 600000);
-    if (typeof partial.durationMin === "number") gameSettings.durationMin = clampInt(partial.durationMin, 1, 999);
-    if (typeof partial.lives === "number") gameSettings.lives = clampInt(partial.lives, 1, 99);
+    if (typeof partial.durationMin === "number") gameSettings.durationMin = clampInt(partial.durationMin, 0, 999);
+    if (typeof partial.lives === "number") gameSettings.lives = clampInt(partial.lives, 0, 99);
     syncSettingsUI();
 }
 
