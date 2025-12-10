@@ -72,3 +72,6 @@ Free for all:
 - ```gamelength``` ist in Minuten
 - ```"teamID": 255``` = FFA
 - ```"teamID": 0``` = idle mode
+
+## Server
+

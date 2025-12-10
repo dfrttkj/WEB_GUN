@@ -11,7 +11,7 @@ const routes = new Map([
     ["/home", routesHandler.sendHomeHTML],
     ["/leaderboard", routesHandler.sendLeaderboardHTML],
     ["/styles/create.css", routesHandler.sendCreateCSS],
-    ["/scripts/create.js", routesHandler.sendCreateJS]
+    ["/scripts/create/main.js", routesHandler.sendCreateJS]
 ]);
 
 // http server handler
@@ -35,22 +35,23 @@ const wss = new WebSocketServer({
 wss.on('connection', (ws, req) => {
     const ip = req.socket.remoteAddress;
     console.log('WS', 'Conn', `New connection established from ${ip}`);
-});
 
-// Websocket handler
-wss.on('message', (message) => {
-    console.log(message.toString());
+    // Websocket handler
+    wss.on('message', (message) => {
+        console.log(message.toString());
 
-    let data;
-    try {
-        data = JSON.parse(message);
-    } catch (error) {
-        log("Data could not be read");
-    } 
+        let data;
+        try {
+            data = JSON.parse(message);
+        } catch (error) {
+            log("Data could not be read");
+        } 
 
-    if (data) {
-        handler.handleMessage(message);
-    }
+        if (data) {
+            handler.handleMessage(message);
+        }
+        
+    });
 });
 
 server.listen(constants.PORT, constants.HOST, async () => {
