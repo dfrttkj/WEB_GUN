@@ -2,28 +2,16 @@ const { createServer } = require('http');
 const ws = require('ws');
 const constants = require('./config/constants.js');
 const handler = require('./utils/handler.js');
-const routesHandler = require('./routes/HTMLRoutes.js');
 //const {log} = require('./utils/logger.js');
 const fs = require('fs');
-
-const routes = new Map([
-    ["/create", routesHandler.sendCreateHTML],
-    ["/home", routesHandler.sendHomeHTML],
-    ["/leaderboard", routesHandler.sendLeaderboardHTML],
-    ["/styles/create.css", routesHandler.sendCreateCSS],
-    ["/scripts/create/main.js", routesHandler.sendCreateJS]
-]);
+const api = require('./routes/api.js');
 
 // http server handler
 const server = createServer((req, res) => {
     const ip = req.socket.remoteAddress;
     console.log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
 
-    if (routes.has(req.url)) {
-        routes.get(req.url)(req, res);
-    } else {
-        routesHandler.sendNotfound(req, res);
-    }
+    api.handleHttpRequest(req, res);
 });
 
 // neuen Websocket
