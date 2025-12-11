@@ -1,37 +1,52 @@
-import { createServer } from 'http';
-import { WebSocketServer } from 'ws';
+const { createServer } = require('http');
+const WebSocket = require('ws');
+const constants = require('./config/constants.js');
+const handler = require('./utils/handler.js');
+//const {log} = require('./utils/logger.js');
+const fs = require('fs');
+const api = require('./routes/api.js');
 
-import { handleHttpRequest } from './api.js';
-import { handleConnection } from './websocket/handlers.js';
-import { getServerIp } from './utils/helpers.js';
-import { PORT, HOST, WS_PATH } from './config/constants.js';
-import { log } from './utils/logger.js'; // Import Logger
-
+// http server handler
 const server = createServer((req, res) => {
-    // LOG EVERYTHING: Incoming HTTP Request
     const ip = req.socket.remoteAddress;
-    log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
+    console.log('HTTP', 'Server', `${req.method} ${req.url} from ${ip}`);
 
-    handleHttpRequest(req, res);
+    api.handleHttpRequest(req, res);
 });
 
-const wss = new WebSocketServer({
+// neuen Websocket
+const wss = new WebSocket.WebSocketServer({
     server,
-    path: WS_PATH   // ws://HOST:PORT/chat
+    path: constants.WS_PATH
 });
 
 wss.on('connection', (ws, req) => {
-    // LOG EVERYTHING: New WebSocket Connection
     const ip = req.socket.remoteAddress;
-    log('WS', 'Conn', `New connection established from ${ip}`);
+    console.log('WS', 'Conn', `New connection established from ${ip}`);
+    
+    ws.send(JSON.stringify({hi: "hallo"}));
 
-    handleConnection(ws, wss);
+    // Websocket handler
+    ws.on('message', (message) => {
+        console.log(message.toString());
+
+        let data;
+        try {
+            data = JSON.parse(message);
+            console.log(data);
+        } catch (error) {
+            console.log("Data could not be read");
+        } 
+
+        if (data) {
+            handler.handleMessage(message);
+        }
+        
+    });
 });
 
-server.listen(PORT, HOST, async () => {
-    const ip = await getServerIp();
-
-    log('INFO', 'System', `Server started on port ${PORT}`);
+server.listen(constants.PORT, constants.HOST, async () => {
+    console.log('INFO', 'System', `Server started on port ${constants.PORT}`);
     console.log('----------------------------------------');
-    console.log(`Server running at http://${HOST}:${PORT}`);
+    console.log(`Server running at http://${constants.HOST}:${constants.PORT}`);
 });
