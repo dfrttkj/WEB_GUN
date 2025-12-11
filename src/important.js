@@ -1,5 +1,5 @@
 const { createServer } = require('http');
-const { WebSocketServer } = require('ws');
+const ws = require('ws');
 const constants = require('./config/constants.js');
 const handler = require('./utils/handler.js');
 const routesHandler = require('./routes/HTMLRoutes.js');
@@ -27,7 +27,7 @@ const server = createServer((req, res) => {
 });
 
 // neuen Websocket
-const wss = new WebSocketServer({
+const wss = new ws.WebSocketServer({
     server,
     path: constants.WS_PATH
 });
